@@ -1,3 +1,5 @@
+-- Day 1; SQL
+
 show databases;
 
 -- mysql.user means use the mysql database and read from the user table
@@ -12,7 +14,7 @@ SELECT * FROM mysql.help_topic;
 -- select only the help_topic_id, help_category_id, and url columns from help_topic table on mysql
 SELECT help_topic_id, help_category_id, url FROM mysql.help_topic;
 
--- Day 2; Clauses
+-- Day 2; SQL - Clauses
 
 use sakila;
 
