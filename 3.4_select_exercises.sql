@@ -13,6 +13,7 @@ SQL Code Used:
 
 
 
+
 use albums;
 
 -- Selects all from the albums table
@@ -33,5 +34,5 @@ SELECT * FROM albums WHERE release_date BETWEEN 1990 AND 1999;
 -- Selects albums which had less than 20 million certiied sales
 SELECT * FROM albums WHERE sales < 20;
 
--- Does not include genres "Hard Rock" and "Progressive Rock" because it searches for the specific genre "Rock", not the words
+-- Does not include genres "Hard Rock" and "Progressive Rock" because it searches for the word "Rock" by itself.  "%Rock%" would search for anything containing itf
 SELECT * FROM albums WHERE genre = 'Rock';
