@@ -20,12 +20,16 @@ FROM salaries;
 
 -- Generate a username for all of the employees.
 
-SELECT lower(concat
-(substring(first_name,1,1), 
-substring(last_name,1,4),
- '_', 
- substring(birth_date,-5,2), 
- substring(birth_date,3,2))), 
+SELECT 
+	lower(
+		concat(
+			substring(first_name,1,1), 
+			substring(last_name,1,4),
+ 			'_', 
+ 			substring(birth_date,-5,2), 
+ 			substring(birth_date,3,2)
+ 		)
+ 	), 
  first_name, 
  last_name, 
  birth_date 
