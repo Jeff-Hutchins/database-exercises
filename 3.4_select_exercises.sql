@@ -12,18 +12,25 @@ CREATE TABLE `albums` (
 SQL Code Used:
 
 
+
 use albums;
 
+-- Selects all from the albums table
 SELECT * from albums;
 
+-- Selects the name of all albums by Pink Floyd
 SELECT * FROM albums WHERE artist='Pink Floyd';
 
+-- Selects the year Sgt. Peppers Lonelyn Hearts Club Band was released
 SELECT release_date FROM albums WHERE name = "Sgt. Pepper's Lonely Hearts Club Band";
 
+-- Selects the genre for the album Nevermind
 SELECT genre FROM albums WHERE name='Nevermind';
 
+-- Selects albums that were released in the 1990s
 SELECT * FROM albums WHERE release_date BETWEEN 1990 AND 1999;
 
+-- Selects albums which had less than 20 million certiied sales
 SELECT * FROM albums WHERE sales < 20;
 
 -- Does not include genres "Hard Rock" and "Progressive Rock" because it searches for the specific genre "Rock", not the words
