@@ -37,3 +37,59 @@ SELECT * FROM customer;
 -- Use 'IN' function to shorten the code
 SELECT * FROM customer WHERE first_name IN ('BARBARA','JOAQUIN','SANDRA');
 SELECT * FROM customer WHERE first_name='BARBARA' OR first_name='JOAQUIN' OR first_name='SANDRA';
+
+
+-- Day 2; MySQL functions
+
+use sakila;
+
+SELECT * FROM actor;
+-- We're eventually going to be having python scripts that use SQL to pull information for databases.
+-- SQL functions are vectorized, whereas python would need loops to do the same.
+-- The LIKE function modifies the WHERE clause
+SELECT concat(address, '\n ',district) as full_address from address;
+
+SELECT concat('Hello',' ', 'World');
+
+SELECT concat(address, ', ',district) as full_address 
+FROM address
+WHERE district not like '%berta';
+
+SELECT sin(`actor_id`)
+from actor;
+
+SELECT cos(actor_id)
+from actor;
+
+SELECT tan(actor_id)
+from actor;
+
+SELECT count(*)
+from actor;
+
+use employees;
+
+SELECT count(*)
+FROM salaries
+WHERE salary > 63000
+AND to_date > now();
+
+SELECT concat(first_name, ', ', last_name)
+REGEXP '^a' as full_name
+from employees;
+
+SELECT concat(first_name,', ',last_name) as full_name
+from employees;
+
+SELECT SUBSTR(concat(first_name,', ',last_name), -4, 4) as full_name
+from employees;
+
+SELECT upper(name)
+from fruits;
+
+SELECT concat(upper(substring(name, 1, 1)),
+substring(name, 2))
+from fruits;
+
+SELECT replace(name, 'cant', 'ant')
+FROM fruits;
