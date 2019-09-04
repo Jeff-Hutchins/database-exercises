@@ -93,3 +93,36 @@ from fruits;
 
 SELECT replace(name, 'cant', 'ant')
 FROM fruits;
+
+-- Day 2; SQL - Group by
+
+SELECT DISTINCT first_name
+from employees;
+
+SELECT concat(first_name,' ',last_name) as full_name
+from employees
+group by full_name;  -- group by does two jobs, groups by distinct names(pulls out duplicates) and orders.
+
+select count(*)
+from employees;
+
+select count(*)
+from employees
+where first_name NOT LIKE '%a%';
+
+select concat(first_name, ' ',last_name) as full_name, count(*)
+from employees
+group by full_name DESC
+ORDER BY count(*) DESC;
+
+-- ORDER OF OPERATIONS FOR SQL QUERIES
+
+-- SELECT columns
+-- FROM table
+-- JOINs
+-- WHEREs
+-- GROUP Bys
+-- HAVING
+-- ORDER Bys
+-- LIMIT
+-- Offset
