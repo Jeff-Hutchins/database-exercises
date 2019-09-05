@@ -1,84 +1,51 @@
--- 3.7_group_by_exerxcises.sql
-select * from titles;
+-- 3.8.2_join_exercises.sql
 
--- use DISTINCT to find unique titles in the titles tables
-select distinct title from titles
+use join_example_db;
 
+select * from users;
+select * from roles;
+
+select users.name as user_name, roles.name as role_name
+from users
+join roles on users.role_id = roles.id;
+
+select users.name as user_name, roles.name as role_name
+from users
+left join roles on users.role_id = roles.id;
+
+select users.name as user_name, roles.name as role_name
+from users
+right join roles on users.role_id = roles.id;
+
+select count(users.name), roles.name as role_name
+from users
+left join roles on users.role_id = roles.id
+group by role_name;
+
+use employees;
+
+select * from departments;
+select * from dept_manager;
 select * from employees;
 
--- Update query for employees whose last name starts and ends with 'E' to find just the unique last names that start and end with 'E'.
-SELECT last_name  
-FROM employees 
-WHERE last_name
-like 'e%e'
-GROUP BY last_name;
+select distinct departments.dept_name as department_name, concat(employees.first_name,' ',employees.last_name) as department_manager
+from employees
+join dept_manager
+on dept_manager.emp_no = employees.emp_no
+join departments
+on departments.dept_no = dept_manager.dept_no
+where dept_manager.to_date = '9999-01-01'
+order by department_name;
 
--- Update previous query to find unique combos of first and last name.
-SELECT last_name, first_name 
-FROM employees 
-WHERE last_name
-like 'e%e'
-group by last_name,first_name;
+select distinct departments.dept_name as department_name, concat(employees.first_name,' ',employees.last_name) as department_manager
+from employees
+join dept_manager
+on dept_manager.emp_no = employees.emp_no
+join departments
+on departments.dept_no = dept_manager.dept_no
+where dept_manager.to_date = '9999-01-01' and employees.gender = 'F'
+order by department_name;
 
--- Find unique last names with a 'q' but not'qu'.
-SELECT last_name 
-FROM employees 
-WHERE last_name 
-LIKE ('%q%') 
-AND last_name 
-NOT LIKE ('%qu%')
-group by last_name;
-
--- Add a COUNT() to results and use ORDER BY to make it easier to find employees whose unusual name is shared with others.
-SELECT last_name, count(*)
-FROM employees 
-WHERE last_name 
-LIKE ('%q%') 
-AND last_name 
-NOT LIKE ('%qu%')
-GROUP BY last_name
-ORDER BY count(*);
-
--- Update query for names using COUNT(*) and GROUP BY to find the number of employees for each gender with those names.
-SELECT count(*), gender
-FROM employees 
-WHERE (first_name = 'Irena' OR first_name = 'Vidya' OR first_name = 'Maya') 
-GROUP BY gender
-ORDER BY count(*) DESC;
-
--- Recall the query that generated usernames for the employees from the last exercise
-SELECT 
-	lower(
-		concat(
-			substring(first_name,1,1), 
-			substring(last_name,1,4),
- 			'_', 
- 			substring(birth_date,-5,2), 
- 			substring(birth_date,3,2)
- 		)
- 	) as username,
- 	count(*)
- from employees
- group by username
- order by count(*) DESC;
- 
-select count(*) from
- (SELECT count(*) as username_count,
-	lower(
-		concat(
-			substring(first_name,1,1), 
-			substring(last_name,1,4),
- 			'_', 
- 			substring(birth_date,-5,2), 
- 			substring(birth_date,3,2)
- 		)
- 	) as username,
- 	count(*)
- from employees
- group by username
- having username_count > 1)
- as test;
-  
  
 
 
