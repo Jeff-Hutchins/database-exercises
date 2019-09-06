@@ -18,12 +18,25 @@ where hire_date in(
 	where employees.emp_no = 101010);
 	
 -- Find all the titles held by all employees with the first name Aamod.
-	(select employees.first_name, employees.last_name, titles.title
-	from employees
-	join titles on employees.emp_no = titles.emp_no	
-	where employees.first_name = 'Aamod');
+select titles.title
+from titles
+where emp_no in	
+	(select employees.emp_no
+	from employees)
+group by title;
+	
+select employees.first_name, employees.last_name, titles.title
+from employees
+join titles on employees.emp_no = titles.emp_no	
+where employees.first_name = 'Aamod';
 	
 -- How many people in the employees table are no longer working for the company?
+select dept_emp.emp_no, to_date
+from dept_emp
+where to_date not in ('9999-01-01') and dept_emp.emp_no in
+	(select employees.emp_no
+	from employees);
+
 select employees.emp_no
 from employees
 join dept_emp on dept_emp.emp_no = employees.emp_no
@@ -54,3 +67,14 @@ join salaries on employees.emp_no = salaries.emp_no
 where salaries.to_date = '9999-01-01' and salaries.salary >
 	(select max(salaries.salary) - std(salaries.salary)
 	from salaries);
+	
+-- BONUS
+
+-- Find all the department names that currently have female managers
+select employees.gender
+from employees
+where employees.emp_no in
+	(select 
+	from dept_manager
+	where to_date = '9999-01-01')
+having employees.gender = 'F';
