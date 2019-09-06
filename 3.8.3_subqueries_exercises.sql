@@ -24,9 +24,6 @@ where hire_date in(
 	where employees.first_name = 'Aamod');
 	
 -- How many people in the employees table are no longer working for the company?
-select * from employees;
-select * from dept_emp;
-
 select employees.emp_no
 from employees
 join dept_emp on dept_emp.emp_no = employees.emp_no
@@ -34,10 +31,6 @@ where dept_emp.to_date not in ('9999-01-01');
 
 
 -- Find all the current department managers that are female
--- Find department managers, then which are female
-select * from dept_manager;
-select * from employees;
-
 select employees.first_name, employees.last_name, employees.gender
 from employees
 where employees.emp_no in
@@ -45,3 +38,19 @@ where employees.emp_no in
 	from dept_manager
 	where to_date = '9999-01-01')
 having employees.gender = 'F';
+
+-- Find all employees that currently have a higher than average salary.
+select distinct employees.first_name, employees.last_name, salaries.salary
+from employees
+join salaries on employees.emp_no = salaries.emp_no
+where salaries.to_date = '9999-01-01' and salaries.salary >
+	(select avg(salaries.salary)
+	from salaries);
+	
+-- How many current salaries are within 1 standard deviation of the highest salary?
+select distinct employees.first_name, employees.last_name, salaries.salary
+from employees
+join salaries on employees.emp_no = salaries.emp_no
+where salaries.to_date = '9999-01-01' and salaries.salary >
+	(select max(salaries.salary) - std(salaries.salary)
+	from salaries);
