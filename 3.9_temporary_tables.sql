@@ -51,3 +51,18 @@ select * from sakila_payment;
 -- Find out how the average pay in each department compares to the overall average pay.
 -- In order to make it easier, use Z-score for salaries.
 -- In terms of salary, what is the best department to work for? The worst?
+
+use employees;
+select * from departments;
+select * from salaries;
+select * from dept_emp;
+
+use bayes_820;
+
+CREATE TEMPORARY TABLE employees_combineed AS
+SELECT dept_name, emp_no, dept_no, salary
+FROM employees.departments
+JOIN employees.dept_emp USING(dept_no)
+JOIN employees.salaries USING(emp_no);
+
+select * from employees_combineed;
