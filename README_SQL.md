@@ -207,3 +207,85 @@ join inventory as i
 on (r.inventory_id=i.inventory_id)
 join film as f
 on (i.film_id=f.film_id);
+
+-- Day 4; SQL creating tables
+use bayes_820;
+
+create temporary table employee_salary as
+	select first_name, last_name, salary
+	from employees.employees
+	join employees.salaries using(emp_no);
+
+create temporary table favorite_actors
+	select first_name
+	from sakila.actors
+	where first_name like '%ryan'
+	
+select * from employee_salary;
+use bayes_820;
+-- simple example of temporary table(for permanent tables, remove the temporary keyword)
+create temporary table captains (
+	name VARCHAR(256) not null,
+	ship VARCHAR(256) not null
+);
+-- How to add new records to a table
+insert into captains (name, ship) values ("Captain Ahab", "Pequad");
+
+insert into captains (name, ship) values
+	("Jean Luc Piccard", "USS Starship Enterprise NCC1701D"),
+	("James Tiberius Kirk", "USS Starship Enterprise NCC1701A");
+
+select * from captains;
+-- USING THE SELECT TO DOUBLE CHECK WHAT YOURE GOING TO DELETE
+-- If you ever need to delete a row or rows, create the select statement first.
+delete from captains where name = "Captain Ahab";
+
+create temporary table fruits (
+	id int unsigned not null auto_increment,
+	name varchar(256) not null,
+	primary key(id)
+);
+
+insert into fruits (name) values ('Mango');
+insert into fruits (name) values ('Kiwi');
+
+insert into fruits (name) values
+	('tangerine'),
+	('Gala Apple'),
+	('Banana');
+	
+select * from fruits;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Need to track the quantity of the fruits
+ALTER TABLE fruits add quantity int unsigned;
+
+alter table fruits drop column id;
+
+select * from fruits;
+
+-- SYNTAX for updating an entire column
+update fruits
+set quantity = 10;
+
+-- SYNTAX for updating a specific row's column value
+update fruits
+set quantity = quantity * 10
+where name = 'Kiwi';
+
+-- change gala apple to red apple(if you dont have a 'where' clause you will change the entire column)
+update fruits
+set name = 'Red Apple'
+where name = 'Gala Apple';
