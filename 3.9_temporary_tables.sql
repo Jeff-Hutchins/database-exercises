@@ -10,7 +10,7 @@ JOIN employees.departments USING(dept_no)
 LIMIT 100;
 
 ALTER TABLE employees_with_departments ADD full_name VARCHAR(30);
-
+describe employees_with_departments;
 show create table employees_with_departments;
 
 -- Update table so that full name column contains the correcrt data.
