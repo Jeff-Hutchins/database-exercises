@@ -597,5 +597,59 @@ group by title
 order by total desc
 limit 5;
 
+--	4. What are the most profitable films (in terms of gross revenue)?
+
+select title, sum(payment.amount) as total
+from film
+join inventory on inventory.film_id = film.film_id
+join rental on rental.inventory_id = inventory.inventory_id
+join payment on payment.rental_id = rental.rental_id
+group by title
+order by total desc
+limit 5;
+
+-- 5. Who is the best customer?
+
+select customer.first_name, customer.last_name, sum(payment.amount) as total
+from film
+join inventory on inventory.film_id = film.film_id
+join rental on rental.inventory_id = inventory.inventory_id
+join payment on payment.rental_id = rental.rental_id	
+join customer on payment.customer_id = customer.customer_id
+group by customer.first_name, customer.last_name
+order by total desc
+limit 1;
+
+-- 6. Who are the most popular actors (that have appeared in the most films)?
+
+select * from film;
+select * from actor;
+select * from film_actor;
+	
+select concat(actor.last_name,' ', actor.first_name) as actor_name, count(film.title) as total
+from film
+join film_actor on film.film_id = film_actor.film_id
+join actor on actor.actor_id = film_actor.actor_id
+group by actor_name
+order by total desc;
+
+-- 7. What are the sales for each store for each month in 2005?
+
+select * from category;
+select * from film_category;
+select * from inventory;
+select * from payment;
+select * from rental;
+	
+select substring(payment_date,1,7) as month, inventory.store_id as store_id, sum(payment.amount) as sales
+from rental
+join payment on rental.rental_id = payment.rental_id
+join inventory on rental.inventory_id = inventory.inventory_id
+join film_category on inventory.film_id = film_category.film_id
+join category on film_category.category_id = category.category_id
+group by month, store_id
+limit 8;
+
+-- 8. BONUS: Find the film title, customer name, customer phone number, and customer address for all the outstanding DVDs.
 	
 	
