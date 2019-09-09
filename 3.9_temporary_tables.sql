@@ -100,3 +100,46 @@ select * from employees_comb5;
 		-- calculated z_scores based on previous calculations.
 select dept_name, ((dept_mean - mean) / std_dev) as z_score
 from employees_comb5;
+
+		/* The best department to work for is the sales department with a z_score of 0.527.
+		The worst department to work for is Human Resources with a z_score -0.915 */
+
+
+
+/* What is the average salarhy for an employee based on the number of years they have been with the company?  In terms of z_score of salary.
+Scale the years of experience by subtarcting the minimum from every row. */
+select * from employees.departments;
+select * from employees.salaries;
+select * from employees.dept_emp;
+select * from employees.dept_manager;
+select * from employees.employees;
+select * from employees.titles;
+
+use bayes_820;
+
+		/* Create temporary table that finds the total number of years a current employ has been working at the company.
+		subtract minimum years from total years(17).  Group by years. */
+create temporary table years1
+select (substring(dept_emp.to_date, 1,4) - 7980 -17) - substring(dept_emp.from_date,1,4) as years_with_company, avg(salaries.salary) as avg_salary
+from employees.dept_emp
+join employees.salaries using(emp_no)
+where dept_emp.to_date = '9999-01-01' and salaries.to_date = '9999-01-01'
+group by years_with_company;
+
+		-- Alter table to add columns for avg of all salaries and std dev of all salaires
+alter table years1 add column avg_tot int;
+alter table years1 add column std_dev int;
+
+select * from years1;
+
+		-- Update table with avg of all salaries
+update years1
+set avg_tot = 72012.2359;
+
+		-- Update table with std dev of all salaries
+update years1
+set std_dev = 17309.95933634675;
+
+		-- Use temporary table to calculate z_scores of years 0 -17.
+select years_with_company, ((avg_salary - avg_tot) / std_dev) as z_score
+from years1;
