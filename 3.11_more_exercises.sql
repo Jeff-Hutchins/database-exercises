@@ -39,6 +39,250 @@ select * from current_man_sal4;
 
 use bayes820;
 
+	-- Join both temporary tables and subtract the avg managers salary per department from the current managers salaries by department.
 select Name, salary - s
 from current_man_sal4
 join avg_dept_salary2 on current_man_sal4.id = avg_dept_salary2.id;
+
+-- USE THE WORLD DATABSE FOR THE QUESTIONS BELOW
+
+-- What languages are spoken in Santa Monica?
+
+select * from city;
+select * from country;
+select * from countrylanguage;
+
+	-- Find CountryCode for Santa Monica
+select Name, CountryCode
+from city
+where Name = 'Santa Monica';
+	-- Select langauges and % for CountryCode USA
+select language, percentage
+from countrylanguage
+where CountryCode = 'USA'
+order by percentage;
+
+-- How many different coutries are in each region?
+
+select region, count(name)
+from country
+group by region
+order by count(name);
+	
+-- What is the population for each region?
+
+select region, SUM(population)
+from country
+group by region;
+
+-- Whwat is the population for each continent?
+
+select continent, sum(population)
+from country
+group by continent
+order by sum(population) DESC;
+
+-- What is the average life expectancy globally?
+
+select avg(lifeexpectancy)
+from country;
+
+-- What is the average life expectancy for each region, each continent?  Sort results from shortest to longest.
+
+select continent, avg(lifeexpectancy) as life_expectancy
+from country
+group by continent
+order by life_expectancy;
+
+select region, avg(lifeexpectancy) as life_expectancy
+from country
+group by region
+order by life_expectancy;
+
+-- BONUS
+-- Find all the countries whose local name is different from the official name
+-- How many countries have a life expectancy less than x?
+-- What state is city x located in?
+-- What region of the world is city x located in?
+-- What country (use the human readable name) city x located in?
+-- What is the life expectancy in city x?
+
+-- USE SAKILA DATABASE FOR QUESTIONS BELOW
+
+-- Display the first and last namese in all lowercase of all the actors
+
+select * from actor;
+
+select lower(concat(first_name,' ', last_name)) as Actors
+from actor;
+
+-- Select id number and actor name from just the first names.
+
+select concat(actor_id,' ',first_name,' ', last_name)
+from actor
+where first_name = 'NICK';
+
+-- Find all actors whose last name contain the letters "gen"
+
+select concat(actor_id,' ',first_name,' ', last_name)
+from actor
+where last_name like '%GEN%';
+
+-- Find all actors whose lastr names contain the letters "li".  This time, order the rows by last name and first name, in that order.
+
+select first_name, last_name
+from actor
+where last_name like '%LI%'
+order by last_name, first_name;
+
+-- Using IN, display the country_id and country columns for the following countries:
+-- Afghanistan, Bangladesh, and China:
+
+select * from country;
+
+select country_id, country
+from country
+where country in ('Afghanistan', 'Bangladesh', 'China');
+
+-- List the last names of all the acgtors, as well as how many actors have that last name.
+
+select * from actor;
+
+select last_name, count(last_name)
+from actor
+group by last_name;
+
+-- List last names of actors and the number of actors who have that last name, 
+-- but only for names that are shared by at least two actors.
+
+select last_name, count(last_name) as repeated
+from actor
+group by last_name
+order by repeated DESC
+limit 55;
+
+-- You cannot locate the schema of the address table.  Which query would you use to re-create it?
+
+show create table address;
+
+-- Use JOIN to display the first and last names, as well as the address, of each staff member.
+select * from staff;
+select * from address;
+
+select first_name, last_name, address
+from staff
+join address on staff.address_id = address.address_id;
+
+-- Use JOIN to display the total amount rung up by each staff member in August of 2005.
+
+select * from staff;
+select * from payment;
+
+select first_name, last_name, sum(amount)
+from staff
+join payment on staff.staff_id = payment.staff_id
+where payment.payment_date like '2005-08%'
+group by first_name, last_name;
+
+-- List each film and the numnber of actors who are listed for that film.
+
+select * from film;
+select * from actor;
+select * from film_actor;
+
+select title, count(actor.actor_id) as number_of_actors
+from film
+join film_actor on film.film_id = film_actor.film_id
+join actor on actor.actor_id = film_actor.actor_id
+group by title;
+
+-- How many copies of the film Hunchback Impossible exist in the inventory system?
+-- ANSWER = 6
+select * from inventory;
+select * from film;
+
+select count(*)
+from inventory
+where film_id =
+	(select film_id
+	from film
+	where title = 'Hunchback Impossible');
+	
+-- Use subqueries to display the titles of movies starting with the letters K and Q whose language is English.
+
+select * from film;
+select * from language;
+
+select title
+from film
+where title like 'K%' or title like 'Q%' and title in
+	(select title
+	from film
+	where language_id = 1);
+	
+-- Use subqueries to display all actors who appear in the film Alone Trip.
+
+select * from actor;
+select * from film_actor;
+select * from film;
+
+select first_name, last_name
+from actor
+where actor_id in
+	(select actor_id
+	from film_actor
+	where film_id =
+		(select film_id
+		from film
+		where title = 'Alone Trip'));
+		
+-- Get names and email addresses of all Canadian customers.
+select * from address;
+select * from city;
+select * from customer;
+select * from country;
+
+select first_name, last_name, email
+from customer
+where address_id in
+	(select address_id
+	from address
+	where city_id in
+		(select city_id
+		from city
+		where country_id =
+			(select country_id
+			from country
+			where country = 'Canada')));
+
+-- Identify all movies categorized as family films.
+
+select * from film;
+select * from film_category;
+select * from category;
+
+select title
+from film
+where film_id in 	
+	(select film_id
+	from film_category
+	where category_id =
+		(select category_id
+		from category
+		where name = 'Family'));
+		
+-- Write a query to display how much business, in dollars, each store brought in
+
+select * from store;
+select * from staff;
+select * from payment;
+
+select staff_id, sum(amount)
+from payment
+where staff_id in
+	(select staff_id
+	from staff
+	where store_id in
+		(select store_id
+		from store))
+group by staff_id;
