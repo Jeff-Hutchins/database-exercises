@@ -516,45 +516,49 @@ limit 5;
 	
 	-- b. Select the customer first_name/last_name and actor first_name/last_name columns from performing a /right join between the customer and actor column on 	the last_name column in each table. (i.e. customer.last_name = actor.last_name)
 	
-	
-	
-	-- returns correct number of records: 200
-	
-	
+		-- returns correct number of records: 200
+		
+		
+	select customer.first_name as customer_first_name, customer.last_name as customer_last_name, actor.first_name as actor_first_name, actor.last_name as 		 actor_last_name
+	from customer
+	right join actor on customer.last_name = actor.last_name;	
 	
 	-- c Select the customer first_name/last_name and actor first_name/last_name columns from performing an inner join between the customer and actor column on the 	last_name column in each table. (i.e. customer.last_name = actor.last_name)
 	
-	
-	
 	-- returns correct number of records: 43
 	
-	
-	
+	select customer.first_name as customer_first_name, customer.last_name as customer_last_name, actor.first_name as actor_first_name, actor.last_name as 		 actor_last_name
+	from customer
+	join actor on customer.last_name = actor.last_name;	
+
 	-- d. Select the city name and country name columns from the city table, performing a left join with the country table to get the country name column.
 	
-	
-	
 	-- Returns correct records: 600
-	
-	
-	
+
+	select city, country
+ 	from city
+	left join country on city.country_id = country.country_id;
+
 	-- e. Select the title, description, release year, and language name columns from the film table, performing a left join with the language table to get the 	"language" column.
 	
-	
-	
 	-- Label the language.name column as "language"
-	
-	
-	
 	-- Returns 1000 rows
 	
-	
+	select title, description, release_year, language.name as language
+	from film
+	left join language on language.language_id = film.language_id;
 	
 	-- f. Select the first_name, last_name, address, address2, city name, district, and postal code columns from the staff table, performing 2 left joins with the address table then the city table to get the address and city related columns.
 	
-	
-	
 	-- returns correct number of rows: 2
+	select * from address;
+	select * from staff;
+	select * from city;
 	
+	select first_name, last_name, address, address2, city, district, postal_code
+	from staff
+	left join address on address.address_id = staff.address_id
+	left join city on city.city_id = address.city_id;
+
 	
 	
