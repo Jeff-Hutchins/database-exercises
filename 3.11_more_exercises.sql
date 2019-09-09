@@ -560,5 +560,42 @@ limit 5;
 	left join address on address.address_id = staff.address_id
 	left join city on city.city_id = address.city_id;
 
+-- 1. What is the average replacement cost of a film?  Does this change depending on the rating of the film.
+-- ANSWER = YES, the cost changes, but barely.
+
+select avg(replacement_cost)
+from film;
+
+select avg(replacement_cost), rating
+from film
+group by rating;
+
+-- 2. How many different films of each genre are in the database?
+select * from film;
+select * from category;
+select * from film_category;
+
+select category.name, count(film.film_id)
+from film
+join film_category on film_category.film_id = film.film_id
+join category on category.category_id = film_category.category_id
+group by category.category_id;
+	
+-- 3. What are the 5 frequently rented films?
+
+select * from film;
+select * from rental;
+select * from inventory;
+select * from payment;
+
+select title, count(rental.inventory_id) as total
+from film
+join inventory on inventory.film_id = film.film_id
+join rental on rental.inventory_id = inventory.inventory_id
+join payment on payment.rental_id = rental.rental_id
+group by title
+order by total desc
+limit 5;
+
 	
 	
