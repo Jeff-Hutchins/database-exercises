@@ -1,5 +1,3 @@
-
-	
 -- 3.9_temporary_tables.sql
 use bayes_820;
 -- Using the exaple from the lesson, re-create the employees_with_departments table.
@@ -63,43 +61,45 @@ use bayes_820;
 
 
 		-- Created table for average salaries by department name.
-CREATE TEMPORARY TABLE employees_comb5 AS
+CREATE TEMPORARY TABLE employees_comb3 AS
 SELECT dept_name, avg(salaries.salary) as dept_mean, std(salaries.salary) as std_dev, avg(salaries.salary) as mean
 FROM employees.departments
 JOIN employees.dept_emp USING(dept_no)
 JOIN employees.salaries USING(emp_no)
-where dept_emp.to_date = '9999-01-01'
+-- where dept_emp.to_date = '9999-01-01'
 group by dept_name;
 
-		-- Created temporary table for average salary across all jobs salaries.
-create temporary table salary2
-select avg(salaries.salary) as mean
-from employees.salaries
-where to_date = '9999-01-01';
+select * from employees_comb3;
 
-select * from salary2;
+		-- Created temporary table for average salary across all jobs salaries.
+create temporary table salary3
+select avg(salaries.salary) as mean
+from employees.salaries;
+-- where to_date = '9999-01-01'
+
+select * from salary3;
 
 		-- Updated temp table employees_comb5 with the average salary(mean) across all job salaries.
-update employees_comb5
-set mean = 72012.2359;
+update employees_comb3
+set mean = 63810.7448;
 
 		-- Created temp table for standard deviation of salaries across all job salaries.
-create temporary table std_dev2
+create temporary table std_dev3
 select std(salaries.salary) as std_dev
-from employees.salaries
-where to_date = '9999-01-01';
+from employees.salaries;
+-- where to_date = '9999-01-01'
 
-select * from std_dev2;
+select * from std_dev3;
 
 		-- Updated temp table employees_comb5 with the std dev of salaries across all job salaries.
-update employees_comb5
-set std_dev = 17309.95933634675;
+update employees_comb3
+set std_dev = 16904.82828800014;
 
-select * from employees_comb5; 
+select * from employees_comb3; 
 
 		-- calculated z_scores based on previous calculations.
 select dept_name, ((dept_mean - mean) / std_dev) as z_score
-from employees_comb5;
+from employees_comb2;
 
 		/* The best department to work for is the sales department with a z_score of 0.527.
 		The worst department to work for is Human Resources with a z_score -0.915 */
