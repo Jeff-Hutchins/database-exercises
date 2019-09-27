@@ -3,10 +3,16 @@
 use employees;
 
 -- Update your queries for employuees whos names start and end with 'E'.  Use concat() to combien their first and last names together as a single column named full_name.
-SELECT CONCAT(first_name,' ',last_name) AS full_name FROM employees WHERE CONCAT(first_name,' ',last_name) like 'e%e';
+SELECT CONCAT(first_name,' ',last_name) AS full_name 
+FROM employees 
+WHERE CONCAT(first_name,' ',last_name) 
+like 'e%e';
 
 -- Convert the names produced in previous query to all uppercase.
-SELECT UPPER(CONCAT(first_name,' ',last_name)) AS full_name FROM employees WHERE CONCAT(first_name,' ',last_name) like 'e%e';
+SELECT UPPER(CONCAT(first_name,' ',last_name)) AS full_name 
+FROM employees 
+WHERE CONCAT(first_name,' ',last_name) 
+like 'e%e';
 
 -- For query of employees born on Christmas and hired in the 90s, use datediff() to find how many days they have been working at the company.
 SELECT datediff(curdate(), hire_date) as days_with_company, first_name, last_name from employees
